@@ -1,6 +1,6 @@
 <div>
     <x-flash-message></x-flash-message>
-    <x-card-simple>
+    <x-card>
         <x-slot name="title">Job Status</x-slot>
         <x-slot name="txt">
             <pre>{!! $out !!}</pre>
@@ -15,6 +15,6 @@
                 </button>
             @endforeach
         </x-slot>
-    </x-card-simple>
+    </x-card>
 
 </div>
