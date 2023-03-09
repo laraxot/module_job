@@ -1,6 +1,6 @@
 <div>
     <x-flash-message></x-flash-message>
-    <x-card-simple>
+    <x-card>
         <x-slot name="title">Schedule Status</x-slot>
         <x-slot name="txt">
             <pre>{!! $out !!}</pre>
@@ -10,8 +10,8 @@
                 <button class="btn btn-primary" wire:click="artisan('{{ $act->name }}')">{{ $act->name }}
                 </button>
             @endforeach
-            
+
         </x-slot>
-    </x-card-simple>
+        </x-card-simple>
 
 </div>
