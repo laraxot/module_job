@@ -54,9 +54,10 @@
             <a class="uk-icon-button uk-button-primary uk-hidden@m" uk-icon="icon: plus"
                 href="{{-- route('totem.task.create') --}}"></a>
             <a class="uk-button uk-button-primary uk-button-small uk-visible@m" href="{{-- route('totem.task.create') --}}"
-                wire:click="tastCreate">
+                wire:click="taskCreate">
                 New Task
             </a>
+            <button type="button" wire:click="taskCreate"> New Task</button>
         </span>
         -
         <span>
@@ -69,4 +70,7 @@
     {{--
 {{ $tasks->links('totem::partials.pagination', ['params' => '&' . http_build_query(array_filter(request()->except('page')))]) }}
 --}}
+    @if ($create)
+        @include('job::livewire.schedule.create')
+    @endif
 </div>
