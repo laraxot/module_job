@@ -18,7 +18,7 @@
                 <x-table.th name="average_runtime" />
                 <x-table.th name="last_ran_at" />
                 <th>Next Run</th>
-                <th class="uk-text-center">Execute</th>
+                <th class="uk-text-center"></th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +31,8 @@
                     {{ $task->average_runtime }} seconds
                 </td>
                 <td>
-                    {{ $task->last_result}}
+                    {{-- $task->last_result --}}
+                    {{ $task->last_ran_at}}
                 </td>
                 <td>
                     {{$task->upcoming}}
