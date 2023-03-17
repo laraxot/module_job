@@ -11,37 +11,46 @@
         {!! Form::text('q', request('q'), ['class' => 'uk-search-input', 'placeholder' => 'Search...']) !!}
         {!! Form::close() !!}
     </div>
-    <table class="uk-table uk-table-responsive" cellpadding="0" cellspacing="0" class="mb1">
+    <table class="table table-bordered" >
         <thead>
             <tr>
-                {{--
-            <th>{!! Html::columnSort('Description', 'description') !!}</th>
-            <th>{!! Html::columnSort('Average Runtime', 'average_runtime') !!}</th>
-            <th>{!! Html::columnSort('Last Run', 'last_ran_at') !!}</th>
-            --}}
                 <x-table.th name="description" />
                 <x-table.th name="average_runtime" />
                 <x-table.th name="last_ran_at" />
-                {{--
-                <th>Description</th>
-
-                <th>Average Runtime</th>
-                <th>Last Run</th>
-                --}}
                 <th>Next Run</th>
                 <th class="uk-text-center">Execute</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($tasks ?? [] as $task)
-                <tr is="task-row" :data-task="{{ $task }}" showHref="{{-- route('totem.task.view',$task) --}}"
-                    executeHref="{{-- route('totem.task.execute',$task) --}}">
-                </tr>
+            @forelse($tasks  as $task)
+            <tr class="{{ $task->is_active ? '' : 'uk-text-danger' }}">
+                <td>
+                    {{ $task->description }}
+                </td>
+                <td>
+                    {{ $task->average_runtime }} seconds
+                </td>
+                <td>
+                    {{ $task->last_result}}
+                </td>
+                <td>
+                    {{$task->upcoming}}
+                </td>
+                <td class="uk-text-center@m">
+                    {{--
+                    <execute-button
+                        :data-task="task"
+                        :url="executeHref"
+                        v-on:taskExecuted="refreshTask"
+                        icon-name="play"
+                        button-class="uk-button-link"
+                    />
+                    --}}
+                </td>
+            </tr>
             @empty
                 <tr>
                     <td class="uk-text-center" colspan="5">
-                        <img class="uk-svg" width="50" height="50"
-                            src="{{ asset('/vendor/totem/img/funnel.svg') }}">
                         <p>No Tasks Found.</p>
                     </td>
                 </tr>
@@ -53,11 +62,8 @@
         <span>
             <a class="uk-icon-button uk-button-primary uk-hidden@m" uk-icon="icon: plus"
                 href="{{-- route('totem.task.create') --}}"></a>
-            <a class="uk-button uk-button-primary uk-button-small uk-visible@m" href="{{-- route('totem.task.create') --}}"
-                wire:click="taskCreate">
-                New Task
-            </a>
-            <button type="button" wire:click="taskCreate"> New Task</button>
+
+            <x-button wire:click="taskCreate">New Task</x-button>
         </span>
         -
         <span>

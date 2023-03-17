@@ -2,37 +2,50 @@
     <x-slot name="title">Add Schedule</x-slot>
 
     <!-- No padding will be applied because the component attribute "content-padding" is set to false -->
-    <form wire:submit.prevent="save">
+
         <div class="uk-flex uk-flex-between uk-flex-middle">
             <h5 class="uk-card-title uk-margin-remove">{{ $task->exists ? 'Update' : 'Create' }} Task</h5>
         </div>
-
+        <x-input.group type="text"  name="description" />
+        {{--
         <div class="uk-grid">
+
+
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">Description</label>
                 <div class="uk-text-meta">Provide a descriptive name for your task</div>
             </div>
             <div class="uk-width-1-1@s uk-width-2-3@m">
-                <x-input.group type="text"  name="description" />
+
                 <input class="uk-input" placeholder="e.g. Daily Backups" name="description" id="description"
                     value="{{ old('description', $task->description) }}" type="text">
                 @if ($errors->has('description'))
                     <p class="uk-text-danger">{{ $errors->first('description') }}</p>
                 @endif
             </div>
+
         </div>
+        --}}
+
+        <x-input.group type="select" name="command" :options="$command_opts" />
+
+        {{-- interessante ..
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">Command</label>
                 <div class="uk-text-meta">Select an artisan command to schedule</div>
             </div>
             <div class="uk-width-1-1@s uk-width-2-3@m">
+
                 <command-list command="{{ $task->command }}" :commands="{{ json_encode($commands) }}"></command-list>
                 @if ($errors->has('command'))
                     <p class="uk-text-danger">{{ $errors->first('command') }}</p>
                 @endif
             </div>
         </div>
+        --}}
+        <x-input.group type="text" name="parameters" />
+        {{--
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">Parameters (Optional)</label>
@@ -43,7 +56,12 @@
                     name="parameters" id="parameters" value="{{ old('parameters', $task->parameters) }}" type="text">
             </div>
         </div>
+        --}}
+
         <hr class="uk-divider-icon">
+        <x-input.group type="select" name="timezone" :options="array_combine($timezones,$timezones)" />
+
+        {{--
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">Timezone</label>
@@ -59,6 +77,15 @@
                 </select>
             </div>
         </div>
+        --}}
+        <x-input.group type="radio.options" name="type" :options="['expression'=>'expression','frequency'=>'frequency']" />
+        @if($form_data['type']=='expression')
+            <x-input.group type="text" name="expression" />
+        @endif
+        @if($form_data['type']=='frequency')
+            <x-input.group type="select" name="expression" :options="$frequency_opts"/>
+        @endif
+        {{--
         <task-type inline-template current="{{ old('type', $task->expression ? 'expression' : 'frequency') }}"
             :existing="{{ old('frequencies') ? json_encode(old('frequencies')) : $task->frequencies }}">
             <div class="uk-margin">
@@ -76,6 +103,9 @@
                         </label>
                     </div>
                 </div>
+
+
+
                 <div class="uk-grid" v-if="isCron">
                     <div class="uk-width-1-1@s uk-width-1-3@m">
                         <label class="uk-form-label">Cron Expression</label>
@@ -90,6 +120,7 @@
                         @endif
                     </div>
                 </div>
+
                 <div class="uk-grid" v-if="managesFrequencies">
                     <div class="uk-width-1-1@s uk-width-1-3@m">
                         <label class="uk-form-label">Frequencies</label>
@@ -99,9 +130,9 @@
                     <div class="uk-width-1-1@s uk-width-2-3@m">
                         <a class="uk-button uk-button-small uk-button-link" @click.self.prevent="showModal = true">Add
                             Frequency</a>
-                        {{--
+
                         @include('totem::dialogs.frequencies.add')
-                        --}}
+
                         <table class="uk-table uk-table-divider uk-margin-remove">
                             <thead>
                                 <tr>
@@ -156,9 +187,13 @@
                         @endif
                     </div>
                 </div>
+
             </div>
         </task-type>
+        --}}
         <hr class="uk-divider-icon">
+        <x-input.group type="email" name="notification_email_address" />
+        {{--
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">Email Notification (optional)</label>
@@ -174,6 +209,9 @@
                 @endif
             </div>
         </div>
+        --}}
+        <x-input.group type="text" name="notification_phone_number" />
+        {{--
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">SMS Notification (optional)</label>
@@ -189,6 +227,9 @@
                 @endif
             </div>
         </div>
+          --}}
+        <x-input.group type="text" name="notification_slack_webhook" />
+        {{--
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
                 <label class="uk-form-label">Slack Notification (optional)</label>
@@ -204,6 +245,7 @@
                 @endif
             </div>
         </div>
+        --}}
         <hr class="uk-divider-icon">
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
@@ -218,6 +260,8 @@
                 </ul>
             </div>
             <div class="uk-width-1-1@s uk-width-2-3@m uk-form-controls-text">
+                <x-input.group type="checkbox.boolean" name="dont_overlap" />
+                {{--
                 <label class="uk-margin">
                     <input type="hidden" name="dont_overlap" id="dont_overlap" value="0"
                         {{ old('dont_overlap', $task->dont_overlap) ? '' : 'checked' }}>
@@ -225,7 +269,9 @@
                         {{ old('dont_overlap', $task->dont_overlap) ? 'checked' : '' }}>
                     Don't Overlap
                 </label>
-
+                --}}
+                <x-input.group type="checkbox.boolean" name="run_in_maintenance" />
+                {{--
                 <div class="uk-margin">
                     <label class="uk-margin">
                         <input type="hidden" name="run_in_maintenance" id="run_in_maintenance" value="0"
@@ -235,6 +281,9 @@
                         Run in maintenance mode
                     </label>
                 </div>
+                --}}
+                <x-input.group type="checkbox.boolean" name="run_on_one_server" />
+                {{--
                 <div class="uk-margin">
                     <label class="uk-margin">
                         <input type="hidden" name="run_on_one_server" id="run_on_one_server" value="0"
@@ -244,6 +293,9 @@
                         Run on a single server
                     </label>
                 </div>
+                --}}
+                <x-input.group type="checkbox.boolean" name="run_in_background" />
+                {{--
                 <div class="uk-margin">
                     <label class="uk-margin">
                         <input type="hidden" name="run_in_background" id="run_in_background" value="0"
@@ -253,6 +305,7 @@
                         Run in the background
                     </label>
                 </div>
+                --}}
             </div>
         </div>
         <hr class="uk-divider-icon">
@@ -264,6 +317,9 @@
                         limit or age. Set non-zero value to enable.</li>
                 </ul>
             </div>
+            <x-input.group type="number" name="auto_cleanup_num"  />
+            <x-input.group type="radio.options" name="auto_cleanup_type" :options="['days'=>'days','results'=>'results']" />
+            {{--
             <div class="uk-width-1-1@s uk-width-2-3@m uk-form-controls-text">
                 <label class="uk-margin">
                     Auto Cleanup results after
@@ -283,26 +339,29 @@
                     </label>
                 </label>
             </div>
+            --}}
         </div>
 
-
+        {{--
         <button class="uk-button uk-button-primary uk-button-small" type="submit">Save</button>
         @if ($task->exists)
-            <a href="{{-- route('totem.task.view',$task) --}}"
+            <a href="{{ route('totem.task.view',$task) }}"
                 class="uk-button uk-button-secondary uk-button-small">Cancel</a>
         @else
-            <a href="{{-- route('totem.tasks.all') --}}" class="uk-button uk-button-secondary uk-button-small">Cancel</a>
+            <a href="{{ route('totem.tasks.all') }}" class="uk-button uk-button-secondary uk-button-small">Cancel</a>
         @endif
+        --}}
 
 
-    </form>
+
+    <x-flash-message />
 
     <x-slot name="buttons">
-        <button type="submit">
-            Save Changes
-        </button>
-        <button type="button" wire:click="$emit('modal.close')">
+        <x-button type="submit">
+            Save
+        </x-button>
+        <x-button type="button" wire:click="$emit('modal.close')">
             Cancel
-        </button>
+        </x-button>
     </x-slot>
 </x-wire-elements-pro::tailwind.modal>
