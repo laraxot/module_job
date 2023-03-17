@@ -70,7 +70,5 @@
     {{--
 {{ $tasks->links('totem::partials.pagination', ['params' => '&' . http_build_query(array_filter(request()->except('page')))]) }}
 --}}
-    @if ($create)
-        @include('job::livewire.schedule.create')
-    @endif
+
 </div>

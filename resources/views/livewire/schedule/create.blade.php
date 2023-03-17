@@ -1,6 +1,5 @@
 <div>
-    <form method="POST">
-        {{ csrf_field() }}
+    <form wire:submit.prevent="store">
         <div class="uk-flex uk-flex-between uk-flex-middle">
             <h5 class="uk-card-title uk-margin-remove">{{ $task->exists ? 'Update' : 'Create' }} Task</h5>
         </div>
@@ -17,6 +16,7 @@
                     <p class="uk-text-danger">{{ $errors->first('description') }}</p>
                 @endif
             </div>
+            <x-input.group type="text" name="description" placeholder="e.g. Daily Backups" />
         </div>
         <div class="uk-grid">
             <div class="uk-width-1-1@s uk-width-1-3@m">
