@@ -11,7 +11,7 @@
         {!! Form::text('q', request('q'), ['class' => 'uk-search-input', 'placeholder' => 'Search...']) !!}
         {!! Form::close() !!}
     </div>
-    <table class="table table-bordered" >
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <x-table.th name="description" />
@@ -23,22 +23,22 @@
         </thead>
         <tbody>
             @forelse($tasks  as $task)
-            <tr class="{{ $task->is_active ? '' : 'uk-text-danger' }}">
-                <td>
-                    {{ $task->description }}
-                </td>
-                <td>
-                    {{ $task->average_runtime }} seconds
-                </td>
-                <td>
-                    {{-- $task->last_result --}}
-                    {{ $task->last_ran_at}}
-                </td>
-                <td>
-                    {{$task->upcoming}}
-                </td>
-                <td class="uk-text-center@m">
-                    {{--
+                <tr class="{{ $task->is_active ? '' : 'uk-text-danger' }}">
+                    <td>
+                        {{ $task->description }}
+                    </td>
+                    <td>
+                        {{ $task->average_runtime }} seconds
+                    </td>
+                    <td>
+                        {{-- $task->last_result --}}
+                        {{ $task->last_ran_at }}
+                    </td>
+                    <td>
+                        {{ $task->upcoming }}
+                    </td>
+                    <td class="uk-text-center@m">
+                        {{--
                     <execute-button
                         :data-task="task"
                         :url="executeHref"
@@ -47,8 +47,11 @@
                         button-class="uk-button-link"
                     />
                     --}}
-                </td>
-            </tr>
+                        <x-button wire:click="executeTask('{{ $task->id }}')">
+                            <i class="fa-solid fa-play"></i>
+                        </x-button>
+                    </td>
+                </tr>
             @empty
                 <tr>
                     <td class="uk-text-center" colspan="5">
