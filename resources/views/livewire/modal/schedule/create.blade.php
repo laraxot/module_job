@@ -364,4 +364,4 @@
             Cancel
         </x-button>
     </x-slot>
-</x-wire-elements-pro::tailwind.modal>
+</x-wire-elements-pro::bootstrap.modal>
