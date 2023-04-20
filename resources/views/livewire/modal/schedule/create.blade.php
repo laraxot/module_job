@@ -1,4 +1,4 @@
-<x-modal.skin on-submit="save" :content-padding="false">
+<x-wire-elements-pro::bootstrap.modal on-submit="save" :content-padding="false">
     <x-slot name="title">Add Schedule</x-slot>
 
     <!-- No padding will be applied because the component attribute "content-padding" is set to false -->
@@ -364,4 +364,4 @@
             Cancel
         </x-button>
     </x-slot>
-</x-modal.skin>
+</x-wire-elements-pro::bootstrap.modal>
