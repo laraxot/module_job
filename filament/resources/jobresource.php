@@ -10,6 +10,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Savannabits\FilamentModules\Concerns\ContextualResource;
@@ -37,7 +38,19 @@ class JobResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')->sortable()->searchable()->toggleable(),
+                Tables\Columns\TextColumn::make('queue'),
+                
+                //Tables\Columns\TextColumn::make('payload'),
+                Tables\Columns\TextColumn::make('attempts'),
+                Tables\Columns\TextColumn::make('reserved_at'),
+                Tables\Columns\TextColumn::make('available_at'),
+                Tables\Columns\TextColumn::make('created_at'),
+                //Tables\Columns\TextColumn::make('created_by'),
+                //Tables\Columns\TextColumn::make('updated_by'),
+                //Tables\Columns\TextColumn::make('updated_at'),
+                Tables\Columns\ViewColumn::make('payload')->view('ui::filament.tables.columns.array'),
+
             ])
             ->filters([
                 //
