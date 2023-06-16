@@ -2,12 +2,13 @@
 
 namespace Modules\Job\Filament\Resources\FailedJobsResource\Pages;
 
-use Filament\Resources\Pages\ListRecords;
-use Filament\Notifications\Notification;
+use Modules\Job\Models\FailedJob;
 use Filament\Pages\Actions\Action;
 use Illuminate\Support\Facades\Artisan;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
 use Modules\Job\Filament\Resources\FailedJobsResource;
-use Modules\Job\FailedJob;
+
 
 class ListFailedJobs extends ListRecords
 {
