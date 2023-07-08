@@ -26,6 +26,11 @@ class JobResource extends Resource
 
     protected static ?string $recordTitleAttribute='name';
 
+    protected static function getNavigationBadge(): ?string
+	{
+		return (string) Job::query()->count();
+	}
+
     public static function form(Form $form): Form
     {
         return $form
