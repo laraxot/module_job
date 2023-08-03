@@ -2,23 +2,24 @@
 
 namespace Modules\Job\Filament\Resources;
 
+use Filament\Resources\Form;
+use Webmozart\Assert\Assert;
+use Filament\Resources\Table;
+use Filament\Resources\Resource;
 use Modules\Job\Models\FailedJob;
-use Modules\Job\Filament\Resources\FailedJobsResource\Pages\ListFailedJobs;
 use Illuminate\Support\Collection;
-use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\ViewAction;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use InvadersXX\FilamentJsoneditor\Forms\JSONEditor;
 use Illuminate\Support\Facades\Artisan;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Tables\Actions\DeleteAction;
+use InvadersXX\FilamentJsoneditor\Forms\JSONEditor;
 use Savannabits\FilamentModules\Concerns\ContextualResource;
+use Modules\Job\Filament\Resources\FailedJobsResource\Pages\ListFailedJobs;
 
 class FailedJobsResource extends Resource
 {
@@ -76,6 +77,8 @@ class FailedJobsResource extends Resource
 					->requiresConfirmation()
 					->action(function (Collection $records): void {
 						foreach ($records as $record) {
+							//Cannot access property $uuid on mixed.
+							Assert::isInstanceOf($record,FailedJob::class);
 							Artisan::call("queue:retry {$record->uuid}");
 						}
 						Notification::make()
