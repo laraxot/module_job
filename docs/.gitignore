@@ -1,0 +1,11 @@
+/build_*/
+/node_modules/
+/vendor/
+/cache/
+/source/assets/build/
+.env
+npm-debug.log
+*.cache
+*.phar
+*.lock
+package-lock.json
